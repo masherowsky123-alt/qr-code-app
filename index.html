@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>📸 Wesele</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase (WAŻNE - klasyczna wersja) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+      background: #fff0f5;
+      padding: 20px;
+    }
+    button {
+      padding: 15px 25px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+      background: #ff4d6d;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>💍 Zrób zdjęcie dla młodej pary</h1>
+  <button onclick="openCamera()">📸 Zrób zdjęcie</button>
+  <input type="file" accept="image/*" capture="environment" id="cameraInput" hidden>
+
+  <p id="status"></p>
+
+<script>
+  // 🔴 TWÓJ CONFIG (WKLEJONY)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAqBruRVVx36pg4NNRmSco-ZMLLGIg37Dk",
+    authDomain: "nataliarafal-580cb.firebaseapp.com",
+    projectId: "nataliarafal-580cb",
+    storageBucket: "nataliarafal-580cb.firebasestorage.app",
+    messagingSenderId: "206557556728",
+    appId: "1:206557556728:web:13e449c0cfef2cc7e1300d"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const storage = firebase.storage();
+
+  function openCamera() {
+    document.getElementById('cameraInput').click();
+  }
+
+  document.getElementById('cameraInput').addEventListener('change', async function() {
+    const file = this.files[0];
+    if (!file) return;
+
+    document.getElementById("status").innerText = "Wysyłanie zdjęcia...";
+
+    const fileName = "zdjecie_" + Date.now() + ".jpg";
+    const ref = storage.ref("wesele/" + fileName);
+
+    await ref.put(file);
+
+    document.getElementById("status").innerText = "Dziękujemy ❤️";
+  });
+</script>
+
+</body>
+</html>
