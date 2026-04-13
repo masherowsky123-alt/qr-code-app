@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Wesele Natali & Rafał 📸</title>
+  <title>Natalia i Rafał Wesele 📸</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Firebase -->
@@ -10,52 +10,125 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
   <style>
+    /* 🌍 BASE */
     body {
       margin: 0;
-  padding: 0;
+      padding: 0;
 
-  min-height: 100vh;
-  min-height: 100dvh; /* 🔥 FIX dla mobile */
+      min-height: 100vh;
+      min-height: 100dvh;
 
-  background-color: #000; /* fallback zanim się załaduje obraz */
+      background-color: #ccb4bc;
+      background-image: url("bg.png"); /* <- Twój plik */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
 
-  background-image: url("bg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial;
 
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
 
-  font-family: Arial;
+      overflow: hidden;
+
+      animation: pageFade 1s ease-out;
     }
 
-    /* 📸 przycisk */
+    @keyframes pageFade {
+      from {
+        opacity: 0;
+        transform: scale(1.02);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* ✨ GLASS / iOS STYLE BUTTON */
     .btn {
       margin-bottom: 80px;
-      padding: 18px 30px;
+      padding: 18px 34px;
+
       font-size: 18px;
-      border-radius: 14px;
-      border: none;
-      background: #ff4d6d;
+      font-weight: 600;
+
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.25);
+
       color: white;
-      z-index: 2;
-      position: relative;
+
       cursor: pointer;
+      position: relative;
+      z-index: 2;
+
+      /* 🔮 GLASS EFFECT */
+      background: rgba(255, 77, 109, 0.35);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      box-shadow:
+        0 8px 30px rgba(0,0,0,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+
+      /* animacje */
+      animation: btnIn 1.2s ease-out, pulse 3s infinite 1.5s;
+      transition: transform 0.2s ease;
     }
 
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    @keyframes btnIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow:
+          0 8px 30px rgba(0,0,0,0.25),
+          0 0 0 0 rgba(255,77,109,0.4);
+      }
+      70% {
+        box-shadow:
+          0 8px 30px rgba(0,0,0,0.25),
+          0 0 0 18px rgba(255,77,109,0);
+      }
+      100% {
+        box-shadow:
+          0 8px 30px rgba(0,0,0,0.25),
+          0 0 0 0 rgba(255,77,109,0);
+      }
+    }
+
+    /* 📷 input */
     #cameraInput {
       display: none;
     }
 
-    /* status uploadu */
+    /* 📊 status */
     #status {
       position: absolute;
       bottom: 150px;
       color: white;
       font-size: 14px;
       z-index: 2;
+
+      animation: fadeStatus 1s ease-out;
+    }
+
+    @keyframes fadeStatus {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
@@ -71,7 +144,7 @@
   <p id="status"></p>
 
 <script>
-  // 🔴 TWÓJ FIREBASE CONFIG (NIE ZMIENIAŁEM)
+  // 🔥 FIREBASE CONFIG (Twój)
   const firebaseConfig = {
     apiKey: "AIzaSyAqBruRVVx36pg4NNRmSco-ZMLLGIg37Dk",
     authDomain: "nataliarafal-580cb.firebaseapp.com",
@@ -88,7 +161,7 @@
     document.getElementById('cameraInput').click();
   }
 
-  document.getElementById('cameraInput').addEventListener('change', async function() {
+  document.getElementById('cameraInput').addEventListener('change', async function () {
     const file = this.files[0];
     if (!file) return;
 
