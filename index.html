@@ -12,19 +12,23 @@
   <style>
     body {
       margin: 0;
-      height: 100vh;
+  padding: 0;
 
-      /* 📸 TWOJE TŁO */
-      background-image: url("bg.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+  min-height: 100vh;
+  min-height: 100dvh; /* 🔥 FIX dla mobile */
 
-      font-family: Arial;
+  background-color: #000; /* fallback zanim się załaduje obraz */
 
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
+  background-image: url("bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  font-family: Arial;
     }
 
     /* 📸 przycisk */
